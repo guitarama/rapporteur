@@ -18,6 +18,6 @@ class StatusesController < ActionController::Base
 
 
   def display_errors(resource, format)
-    render({format => {:errors => resource.errors}, :status => :internal_server_error})
+    render({format => {:errors => resource.errors, :messages => resource.as_json}, :status => :internal_server_error})
   end
 end

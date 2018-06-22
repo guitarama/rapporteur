@@ -1,27 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper.rb'
 
-describe "status route", :type => :routing do
-  it 'routes /status.json to statuses#show' do
-    expect({ :get => '/status.json'}).to route_to({
-      :action => 'show',
-      :controller => 'statuses',
-      :format => 'json',
-    })
-  end
-
-  it 'does not route /status' do
-    expect({ :get => '/status'}).to_not be_routable
-  end
-
-  it 'does not route /status.html' do
-    expect({ :get => '/status.html'}).to_not be_routable
-  end
-
-  it 'does not route /status.xml' do
-    expect({ :get => '/status.xml'}).to_not be_routable
-  end
-
-  it 'does not route /status.json.json' do
-    expect({ :get => '/status.json.json'}).to_not be_routable
+RSpec.describe 'status route', type: :routing do
+  it 'routes / to rapporteur/statuses#show' do
+    expect(get: '/').to route_to(action: 'show',
+                                 controller: 'rapporteur/statuses')
   end
 end

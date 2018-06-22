@@ -3,12 +3,43 @@
 [![Gem Version](http://img.shields.io/gem/v/rapporteur.svg?style=flat)](http://rubygems.org/gems/rapporteur)
 [![Build Status](http://img.shields.io/travis/envylabs/rapporteur/master.svg?style=flat)](https://travis-ci.org/envylabs/rapporteur)
 [![Code Climate](http://img.shields.io/codeclimate/github/envylabs/rapporteur.svg?style=flat)](https://codeclimate.com/github/envylabs/rapporteur)
-[![Dependency Status](https://gemnasium.com/envylabs/rapporteur.svg)](https://gemnasium.com/envylabs/rapporteur)
 [![Inline docs](http://inch-ci.org/github/envylabs/rapporteur.svg?branch=master)](http://inch-ci.org/github/envylabs/rapporteur)
 
 ## [HEAD][] / unreleased
 
 * No significant changes.
+
+## [3.6.1][] / 2018-05-20
+
+* Convert Checker#messages and #errors into Thread-local variables. See
+  [#17](https://github.com/envylabs/rapporteur/issues/17) and
+  [#18](https://github.com/envylabs/rapporteur/issues/18), thanks to
+  [nevinera][].
+
+## [3.6.0][] / 2017-06-10
+
+* Add `expires_now` to the Rails controller's status response. This ensures the
+  `Cache-Control` header instructs the client to not cache the response and
+  avoids the `ETag` header being generated.
+
+## [3.5.1][] / 2016-02-08
+
+* Fix automatic Rapporteur mount detection logic under Rails 4.0 and 4.1. The
+  mapper constraints used in 4.2 were not used in 4.0 and 4.1, causing a method
+  reference error. See [#15](https://github.com/envylabs/rapporteur/issues/15),
+  thanks to [sshaw][].
+
+## [3.5.0][] / 2016-01-28
+
+* Add a backward-compatible fallback to auto-mount the `Rapporteur::Engine` in
+  a Rails application and deprecation warning if it is not explicitly mounted
+  by the application.
+* Require the parent application to explicitly mount the `Rapporteur::Engine`
+  in their Rails application. This adds mount point flexibility at the cost of
+  configuration.
+* Change ActiveRecord to use a more database agnostic `select_value` query to
+  determine availability. See
+  [#12](https://github.com/envylabs/rapporteur/issues/12).
 
 ## [3.4.0][] / 2016-01-06
 
@@ -31,7 +62,7 @@
 * Update the Rails route definition to force (and default) a JSON format. The
   intent is to fix an issue where Rails auto-appended a `(.:format)` segment to
   the fixed route and broke `/status.json` route matching. See
-  [codeschool/rapporteur#9](https://github.com/envylabs/rapporteur/issues/9).
+  [#9](https://github.com/envylabs/rapporteur/issues/9).
 
 ## [3.1.0][] / 2014-07-03
 
@@ -122,17 +153,23 @@
 
 
 [lsylvester]: https://github.com/lsylvester
+[nevinera]: https://github.com/nevinera
+[sshaw]: https://github.com/sshaw
 
-[HEAD]: https://github.com/envylabs/rapporteur/compare/v3.4.0...master
-[3.4.0]: https://github.com/envylabs/rapporteur/compare/v3.3.0...v3.4.0
-[3.3.0]: https://github.com/envylabs/rapporteur/compare/v3.2.0...v3.3.0
-[3.2.0]: https://github.com/envylabs/rapporteur/compare/v3.1.0...v3.2.0
-[3.1.0]: https://github.com/envylabs/rapporteur/compare/v3.0.2...v3.1.0
-[3.0.2]: https://github.com/envylabs/rapporteur/compare/v3.0.1...v3.0.2
-[3.0.1]: https://github.com/envylabs/rapporteur/compare/v3.0.0...v3.0.1
-[3.0.0]: https://github.com/envylabs/rapporteur/compare/v2.1.0...v3.0.0
-[2.1.0]: https://github.com/envylabs/rapporteur/compare/v2.0.1...v2.1.0
-[2.0.1]: https://github.com/envylabs/rapporteur/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/envylabs/rapporteur/compare/v1.1.0...v2.0.0
-[1.1.0]: https://github.com/envylabs/rapporteur/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/envylabs/rapporteur/compare/v1.0.0...v1.0.1
+[1.1.0]: https://github.com/envylabs/rapporteur/compare/v1.0.1...v1.1.0
+[2.0.0]: https://github.com/envylabs/rapporteur/compare/v1.1.0...v2.0.0
+[2.0.1]: https://github.com/envylabs/rapporteur/compare/v2.0.0...v2.0.1
+[2.1.0]: https://github.com/envylabs/rapporteur/compare/v2.0.1...v2.1.0
+[3.0.0]: https://github.com/envylabs/rapporteur/compare/v2.1.0...v3.0.0
+[3.0.1]: https://github.com/envylabs/rapporteur/compare/v3.0.0...v3.0.1
+[3.0.2]: https://github.com/envylabs/rapporteur/compare/v3.0.1...v3.0.2
+[3.1.0]: https://github.com/envylabs/rapporteur/compare/v3.0.2...v3.1.0
+[3.2.0]: https://github.com/envylabs/rapporteur/compare/v3.1.0...v3.2.0
+[3.3.0]: https://github.com/envylabs/rapporteur/compare/v3.2.0...v3.3.0
+[3.4.0]: https://github.com/envylabs/rapporteur/compare/v3.3.0...v3.4.0
+[3.5.0]: https://github.com/envylabs/rapporteur/compare/v3.4.0...v3.5.0
+[3.5.1]: https://github.com/envylabs/rapporteur/compare/v3.5.0...v3.5.1
+[3.6.0]: https://github.com/envylabs/rapporteur/compare/v3.5.1...v3.6.0
+[3.6.1]: https://github.com/envylabs/rapporteur/compare/v3.6.0...v3.6.1
+[HEAD]: https://github.com/envylabs/rapporteur/compare/v3.6.1...master

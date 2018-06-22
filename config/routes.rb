@@ -1,20 +1,12 @@
+# frozen_string_literal: true
+
 Rapporteur::Engine.routes.draw do
-  get("status.:format", {
-    :as => :status,
-    :constraints => {:format => "json"},
-    :defaults => {:format => "json"},
-    :to => "statuses#show"
-  })
+  get '/(.:format)', to: 'statuses#show', as: :status
 end
 
-Rails.application.routes.draw do
-  unless Rails.application.routes.named_routes[:status]
-    mount Rapporteur::Engine => "/"
-    get("/status.:format", {
-      :as => :status,
-      :constraints => {:format => "json"},
-      :defaults => {:format => "json"},
-      :to => "statuses#show"
-    })
+unless Rails.application.routes.routes.any? { |r| (Rapporteur::Engine == r.app) || (r.app.respond_to?(:app) && Rapporteur::Engine == r.app.app) }
+  ActiveSupport::Deprecation.warn('Rapporteur was not explicitly mounted in your application. Please add an explicit mount call to your /config/routes.rb. Automatically mounted Rapporteur::Engine to /status for backward compatibility. This will be no longer automatically mount in Rapporteur 4.')
+  Rails.application.routes.draw do
+    mount Rapporteur::Engine, at: '/status'
   end
 end

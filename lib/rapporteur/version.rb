@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Rapporteur
-  VERSION = "3.4.0"
+  VERSION = '3.6.1'
 end

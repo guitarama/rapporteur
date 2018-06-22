@@ -3,7 +3,6 @@
 [![Gem Version](http://img.shields.io/gem/v/rapporteur.svg?style=flat)](http://rubygems.org/gems/rapporteur)
 [![Build Status](http://img.shields.io/travis/envylabs/rapporteur/master.svg?style=flat)](https://travis-ci.org/envylabs/rapporteur)
 [![Code Climate](http://img.shields.io/codeclimate/github/envylabs/rapporteur.svg?style=flat)](https://codeclimate.com/github/envylabs/rapporteur)
-[![Dependency Status](https://gemnasium.com/envylabs/rapporteur.svg)](https://gemnasium.com/envylabs/rapporteur)
 [![Inline docs](http://inch-ci.org/github/envylabs/rapporteur.svg?branch=master)](http://inch-ci.org/github/envylabs/rapporteur)
 
 
@@ -51,19 +50,19 @@ $ bundle install
 
 Supported Ruby versions:
 
-* MRI 2.1
-* MRI 2.0.0
-* MRI 1.9.3
-* MRI 1.9.2
-* JRuby 1.7
+* MRI 2.4
+* MRI 2.3
+* MRI 2.2
 
-Supported Rails versions:
+Supported frameworks:
 
-* Rails 4.x.
-* Rails 3.2.x.
+* Rails 5.x.
+* Rails 4.2+.
+* Sinatra 2.x.
+* Sinatra 1.x.
 
-Non-Rails environments are also supported (such as Sinatra), see Usage below
-for details.
+Older versions of Ruby and frameworks may also work with this library, however
+they are not officially supported.
 
 ## Usage
 
@@ -84,29 +83,27 @@ requirement is that the check objects are callable (respond to `#call`, like a
 Proc). See more in the [Creating custom checks
 section](#creating-custom-checks), below.
 
-### The endpoint
+### Usage in a Rails application
 
-This gem provides a new, single endpoint in your application. Specifically, it
-creates a named `/status.json` route, with the "status" name. It does not match
-on any other format or variation, which isolates the pollution of your
-application routes.
-
-If you'd like to link to the status endpoint from within your application (why,
-I couldn't guess), you can use a standard Rails URL helper:
+If you're running in a Rails environment, then the included Rails Engine should
+automatically get required and loaded. However, you will need to instruct your
+application where to mount the status endpoint. In your `config/routes.rb`, add
+a `mount` at the endpoint you desire:
 
 ```ruby
-link_to status_path
+Rails.application.routes.draw do
+  mount Rapporteur::Engine, at: '/status'
+end
 ```
 
-Were you already using the `/status.json` endpoint or the "status" route name?
-Hmm. Well... you just broke it.
+This will mount the Rapporteur status endpoint at `/status` where it will
+listen for and respond to JSON requests (`/status.json`, for example).
 
-### Usage without Rails (i.e. Sinatra)
+### Usage in a Rack (non-Rails) application
 
-If your application does not have Rails loaded, the Rails Engine logic will be
-bypassed. In this case, you must configure and run your Rapporteur reports
-manually because, in the very least, your status route will not be
-automatically generated as previously described.
+If you're running in a non-Rails, Rack environment (e.g. Sinatra), you can
+`require "rapporteur"` and use the status generator directly from your own
+endpoints.
 
 So, here is an example usage in Sinatra:
 
@@ -117,6 +114,7 @@ require "sinatra/base"
 class MyApp < Sinatra::Base
   get "/status.json" do
     content_type :json
+    status(result.errors.empty? ? 200 : 500)
     body Rapporteur.run.as_json.to_json
   end
 end

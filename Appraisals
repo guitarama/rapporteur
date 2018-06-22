@@ -1,12 +1,17 @@
-appraise "rails3.2" do
-  gem "railties", "~> 3.2.0"
-  gem "test-unit", "~> 3.0"
+# frozen_string_literal: true
+
+appraise 'rails4.2.x' do
+  gem 'railties', '~> 4.2.0'
 end
 
-appraise "rails4.x" do
-  gem "railties", "~> 4.0"
+appraise 'rails5.x' do
+  gem 'railties', '~> 5.0'
 end
 
-appraise "sinatra1.x" do
-  gem "sinatra", "~> 1.4"
+appraise 'sinatra1.x' do
+  gem 'sinatra', '~> 1.4'
+end
+
+appraise 'sinatra2.x' do
+  gem 'sinatra', '~> 2.0'
 end

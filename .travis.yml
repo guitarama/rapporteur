@@ -1,13 +1,17 @@
-language: ruby
-sudo: false
+before_install: gem install bundler -v 1.15.1
 cache: bundler
-rvm:
-  - 1.9.3
-  - 2.2.0
-  - jruby-19mode
 gemfile:
-  - gemfiles/rails3.2.gemfile
-  - gemfiles/rails4.x.gemfile
+  - gemfiles/rails4.2.x.gemfile
+  - gemfiles/rails5.x.gemfile
   - gemfiles/sinatra1.x.gemfile
+  - gemfiles/sinatra2.x.gemfile
+language: ruby
+matrix:
+  fast_finish: true
 notifications:
   email: false
+rvm:
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
+sudo: false
